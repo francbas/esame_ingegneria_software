@@ -136,10 +136,9 @@ class Bomb implements Runnable {
     public void run() {
         SecureRandom rnd = new SecureRandom();
         curStato = Status.PENDING;
-        int R = 0;
+        int R;
         while (curStato == Status.PENDING) {
             R = rnd.nextInt(st.getSize() * 2) + 1;
-            int _k = st.getSize();
             if (R <= st.getSize()) {
                 pickedPlayerId = R - 1;
                 if (st.getPunteggio(pickedPlayerId) > st.getPunteggio(curPlayer.getId())) {
@@ -172,7 +171,7 @@ class ScoreTable {
     private final Map<Integer, Integer> scoremap;
 
     public ScoreTable(int n) {
-        scoremap = new HashMap<Integer, Integer>(n);
+        scoremap = new HashMap<>(n);
     }
 
     public void addPlayer(Player player) {
@@ -184,7 +183,7 @@ class ScoreTable {
     }
 
     public synchronized Integer getPunteggio(Integer playerId) {
-        int temp = scoremap.get(playerId);
+//        int temp = scoremap.get(playerId);
         return scoremap.get(playerId);
     }
 
