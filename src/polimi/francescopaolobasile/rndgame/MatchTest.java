@@ -1,6 +1,8 @@
 package polimi.francescopaolobasile.rndgame;
 
 import java.security.SecureRandom;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,11 +36,14 @@ class Match {
             st.addPlayer(p[i]);
         }
         while (!st.containsValue(5)) {
+            System.out.printf("Nuovo Round!%n");
             for (int i = 0; i < n; i++) {
                 System.out.printf("Player[%d]: %d%n", i, st.getPunteggio(i));
                 playerThreads[i] = new PlayerThread(p[i]);
                 playerThreads[i].setName("TH_player_" + i);
                 playerThreads[i].start();
+            }
+            for (int i = 0; i < n; i++) {
                 playerThreads[i].join();
             }
         }
@@ -179,7 +184,7 @@ class ScoreTable {
     }
 
     public boolean containsValue(Integer i) {
-        return scoremap.containsValue(i);
+        return Collections.max(scoremap.values()) >= i;
     }
 
     public synchronized Integer getPunteggio(Integer playerId) {
