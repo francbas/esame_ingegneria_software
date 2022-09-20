@@ -1,7 +1,6 @@
 package polimi.francescopaolobasile.rndgame;
 
 import java.security.SecureRandom;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,14 +28,14 @@ class Match {
     public void start() throws InterruptedException {
         PlayerThread[] playerThreads = new PlayerThread[n];
         Player[] p = new Player[n];
-        System.out.printf("Benvenuto al RND Game (aka exam killer!)%n%n");
+        System.out.printf("Benvenuto al RND Game (aka exam killer!)%n");
 
         for (int i = 0; i < n; i++) {
             p[i] = new Player(i, st);
             st.addPlayer(p[i]);
         }
         while (!st.containsValue(5)) {
-            System.out.printf("Nuovo Round!%n");
+            System.out.printf("%nNuovo Round!%n");
             for (int i = 0; i < n; i++) {
                 System.out.printf("Player[%d]: %d%n", i, st.getPunteggio(i));
                 playerThreads[i] = new PlayerThread(p[i]);
