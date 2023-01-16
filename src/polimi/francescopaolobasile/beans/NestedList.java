@@ -69,10 +69,11 @@ public class NestedList {
 //        Avvia un thread in paralleo per ciascuna lista di colonne
         for (int i = 0; i < cols; i++) {
             //passiamo iterator al thread per poter eseguire la comparazione in parallelo
-            threads[i] = new Thread(new comparatorThread<>(iteratorA, iteratorB, iteratorC));
+            threads[i] = new Thread(new comparatorThread<>(iteratorA.next(), iteratorB.next(), iteratorC.next()));
             threads[i].setName("threads" + "[" + i + "]");
             threads[i].start();
         }
+
 //        il main thread attende che tutti i threads finiscano
         for (int i = 0; i < cols; i++) {
             threads[i].join();
@@ -156,15 +157,15 @@ class MyGenericCLass implements Comparable {
 }
 
 class comparatorThread<T extends MyGenericCLass> implements Runnable {
-    private Iterator<List<T>> iteratorA;
-    private Iterator<List<T>> iteratorB;
-    private ListIterator<List<Boolean>> iteratorC;
+    private Iterator<T> iteratorA;
+    private Iterator<T> iteratorB;
+    private ListIterator<Boolean> iteratorC;
     private int size;
 
-    public comparatorThread(Iterator<List<T>> a, Iterator<List<T>> b, ListIterator<List<Boolean>> c) {
-        iteratorA = a;
-        iteratorB = b;
-        iteratorC = c;
+    public comparatorThread(List<T> a, List<T> b, List<Boolean> c) {
+        iteratorA = a.iterator();
+        iteratorB = b.iterator();
+        iteratorC = c.listIterator();
     }
 
     /**
@@ -173,17 +174,12 @@ class comparatorThread<T extends MyGenericCLass> implements Runnable {
     @Override
     public void run() {
         // inizializzazione degli iteratori delle matrici
-
-//        ListIterator<List<Boolean>> iteratorC = C.listIterator(); // iteratoreList sulle colonne per poter modificare
         System.out.println(Thread.currentThread().getName() + " running!");
         while (iteratorA.hasNext()) { // si suppone che le matrici abbiano stessa dimensione (check non implementato)
-            Iterator<T> elemA = iteratorA.next().iterator(); // iteratore ora contiene gli elementi generics
-            Iterator<T> elemB = iteratorB.next().iterator();
-            ListIterator<Boolean> elemC = iteratorC.next().listIterator();
-            while (elemA.hasNext()) {
-                elemC.next();
-                elemC.set(elemA.next().compareTo(elemB.next()) > 0); // controllo solo su "greater then"
-            }
+            T elemA = iteratorA.next();
+            T elemB = iteratorB.next();
+            iteratorC.next();
+            iteratorC.set(elemA.compareTo(elemB) > 0); // controllo solo su "greater then"
         }
     }
 }
