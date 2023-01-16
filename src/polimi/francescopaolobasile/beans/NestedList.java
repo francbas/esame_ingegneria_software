@@ -2,6 +2,7 @@ package polimi.francescopaolobasile.beans;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -89,8 +90,13 @@ public class NestedList {
      */
     public static <T> List<List<T>> traspose(List<List<T>> m1) {
         List<List<T>> m2 = new ArrayList<>();
+//inizializzazione matrice di ritorno a null
         for (int i = 0; i < m1.size(); i++) {
-            m2.add(Arrays.asList(null, null, null));
+            List<T> t = new ArrayList<>();
+            for (int j = 0; j < m1.get(0).size(); j++) {
+                t.add(null);
+            }
+            m2.add(t);
         }
 
         int i = 0;
